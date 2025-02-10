@@ -8,7 +8,6 @@ import (
 func RootHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println("[internal/handlers/basic.go: RootHandler has been called]")
 	w.Header().Set("Content-Type", "text/html")
-	w.WriteHeader(http.StatusOK)
 	htmlContent := `
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +20,7 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
 </body>
 </html>
 `
+	w.WriteHeader(http.StatusOK)
 	data := []byte(htmlContent)
 	_, err := w.Write(data)
 	if err != nil {

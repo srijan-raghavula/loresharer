@@ -9,15 +9,20 @@ import (
 func main() {
 	port := ":8080"
 	mux := http.NewServeMux()
-	fs := http.FileServer(http.Dir("."))
+	fs := http.FileServer(http.Dir("./static"))
+
+	mux.Handle(
+		"/static/",
+		http.StripPrefix("/static", fs),
+	)
+	mux.HandleFunc(
+		"GET /home/", handlers.RootHandler,
+	)
+
 	server := &http.Server{
 		Handler: mux,
 		Addr:    port,
 	}
-
-	mux.Handle("/static/*", http.StripPrefix("/static", fs))
-	http.HandleFunc("GET /", handlers.RootHandler)
-
 	log.Println("Starting server")
 	log.Fatal(server.ListenAndServe())
 }
